@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:kongqw="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+    <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+            android:id="@+id/videoPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+    </com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer>
+
+    <com.cc.demo.RockerView
+            android:id="@+id/rockerView_left"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentBottom="true"
+            kongqw:areaBackground="@drawable/default_area_bg"
+            kongqw:rockerBackground="@drawable/default_rocker_bg"
+            kongqw:rockerRadius="30dp"/>
+
+    <com.cc.demo.RockerView
+            android:id="@+id/rockerView_right"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            kongqw:areaBackground="@drawable/default_area_bg"
+            kongqw:rockerBackground="@drawable/default_rocker_bg"
+            kongqw:rockerRadius="30dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layout_speed"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_bg"
+            android:onClick="automaticMode"
+            android:text="自动模式" />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_bg"
+            android:onClick="closeCamera"
+            android:text="关闭摄像" />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/move_text"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="控制:"
+            />
+        <TextView
+            android:id="@+id/deep_text"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="深度:"
+            />
+        <TextView
+            android:id="@+id/tem_text"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="温度:"
+            />
+        <TextView
+            android:id="@+id/gps_text"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GPS:"
+            />
+        <TextView
+            android:id="@+id/energy_text"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电量:"
+            />
+        <TextView
+            android:id="@+id/rpy_text"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="姿态:"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/layout_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="addition"
+                android:text="+"/>
+
+        <TextView
+                android:id="@+id/speedDisplay"
+                android:text="5454"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:layout_width="52dp"
+                android:layout_height="match_parent">
+        </TextView>
+
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="reduce"
+                android:layout_alignParentEnd="true"
+                android:text="-"/>
+
+    </LinearLayout>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="reset"
+            android:background="@drawable/btn_bg"
+            android:layout_margin="10dp"
+            android:layout_above="@id/rockerView_right"
+            android:layout_alignParentEnd="true"
+            android:text="复位"/>
+
+    <TextView
+            android:id="@+id/log_left"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/rockerView_left"/>
+
+    <TextView
+            android:id="@+id/log_right"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/rockerView_left"
+            android:layout_alignParentEnd="true"/>
+</RelativeLayout>
