@@ -31,7 +31,8 @@ public class MQTTService extends MqttService {
     private static MqttAndroidClient client;
     private MqttConnectOptions conOpt;
     public  static  String device_code = "a";
-    private String host = "tcp://47.97.183.24:1884";
+//    private String host = "tcp://47.97.183.24:1884";
+    private String host = "tcp://116.62.44.118:1883";
     private String userName = "admin";
     private String passWord = "public";
     private static String myTopic = "test";      //要订阅的主题

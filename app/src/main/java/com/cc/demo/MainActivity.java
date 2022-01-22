@@ -34,6 +34,8 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
     private MQTTService mqttService;
     public StandardGSYVideoPlayer videoPlayer;
     private int move_direction=0;
+    private int speed=0;
+    private int right_direction=0;
     TextView mLogLeft;
     TextView mLogRight;
     TextView move_text;
@@ -74,7 +76,7 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
                 try {
                     while (true)
                     {
-                        Thread.sleep(200);//延时1s
+                        Thread.sleep(200);//延时发送
                         //do something
                         if (MQTTService.is_connect)
                         {
@@ -94,50 +96,29 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
     {
         String mqtt_topic =  String.format("control_data_%s",MQTTService.device_code);
         String mqtt_data="";
-        switch (move_direction)
-        {
-            case 0:
-                mqtt_data = "{\"move_direction\":\"" + 0 + "\"}";
-                break;
-            case 1:
-                mqtt_data = "{\"move_direction\":\"" + 1 + "\"}";
-                break;
-            case 2:
-                mqtt_data = "{\"move_direction\":\"" + 2 + "\"}";
-                break;
-            case 3:
-                mqtt_data = "{\"move_direction\":\"" + 3 + "\"}";
-                break;
-            case 4:
-                mqtt_data = "{\"move_direction\":\"" + 4 + "\"}";
-                break;
-            case 5:
-                mqtt_data = "{\"move_direction\":\"" + 5 + "\"}";
-                break;
-            case 6:
-                mqtt_data = "{\"move_direction\":\"" + 6 + "\"}";
-                break;
-        }
+        mqtt_data=String.format("{\"move_direction\":%d,\"right_direction\":%d,\"speed\":%d}", move_direction,right_direction,speed);
         MQTTService.publish_topic(mqtt_topic,mqtt_data);
     }
 
 
     private void initv() {
         mLogLeft = findViewById(R.id.log_left);
-
         mLogRight = findViewById(R.id.log_right);
         RockerView rockerViewLeft = findViewById(R.id.rockerView_left);
         if (rockerViewLeft != null) {
             rockerViewLeft.setCallBackMode(RockerView.CallBackMode.CALL_BACK_MODE_STATE_CHANGE);
-            rockerViewLeft.setOnShakeListener(RockerView.DirectionMode.DIRECTION_4_ROTATE_45, new RockerView.OnShakeListener() {
+            rockerViewLeft.setOnAngleChangeListener(new RockerView.OnAngleChangeListener(){
                 @Override
                 public void onStart() {
                     mLogLeft.setText(null);
                 }
 
                 @Override
-                public void direction(RockerView.Direction direction) {
-                    mLogLeft.setText("摇动方向 : " + getDirection(direction));
+                public void angle(double angle,int speed_){
+                    angle = ((-angle+360)%360+270)%360;
+                    move_direction=(int) angle;
+                    speed=speed_;
+                    mLogLeft.setText("摇动 : " + angle+" "+speed);
                 }
 
                 @Override
@@ -163,7 +144,7 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
 
                 @Override
                 public void onFinish() {
-                    move_direction=0;
+                    right_direction=0;
                     mLogRight.setText("回中");
                 }
             });
@@ -345,27 +326,29 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
 //        上升  5
 //        下降  6
         switch (direction) {
-//            case DIRECTION_LEFT:
-//                mqtt_data = "{\"move_direction\":\"" + 3 + "\"}";
-////                message = "左";
+            case DIRECTION_LEFT:
+                mqtt_data = "{\"move_direction\":\"" + 3 + "\"}";
 //                message = "左";
-//                break;
-//            case DIRECTION_RIGHT:
-//                mqtt_data = "{\"move_direction\":\"" + 4 + "\"}";
-////                message = "右";
+                message = "左";
+                right_direction=7;
+                break;
+            case DIRECTION_RIGHT:
+                mqtt_data = "{\"move_direction\":\"" + 4 + "\"}";
 //                message = "右";
-//                break;
+                message = "右";
+                right_direction=8;
+                break;
             case DIRECTION_UP:
                 message = "上";
-                move_direction=5;
+                right_direction=5;
                 break;
             case DIRECTION_DOWN:
-                move_direction=6;
+                right_direction=6;
                 message = "下";
                 break;
             default:
                 message = "default";
-                move_direction=0;
+                right_direction=0;
                 break;
         }
         switch (move_direction)
@@ -380,7 +363,7 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
                 mqtt_data = "{\"move_direction\":\"" + 6 + "\"}";
                 break;
         }
-        MQTTService.publish_topic(mqtt_topic,mqtt_data);
+//        MQTTService.publish_topic(mqtt_topic,mqtt_data);
         return message;
     }
     /*
@@ -525,19 +508,46 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
             tem_text = findViewById(R.id.tem_text);
             gps_text = findViewById(R.id.gps_text);
             energy_text = findViewById(R.id.energy_text);
-            move_text.setText("控制: " + receive_move);
-            deep_text.setText("深度: " + receive_deep);
-            tem_text.setText("温度: " + receive_tem);
+            if (receive_move.equals("0"))
+            {
+                move_text.setText("停止");
+            }
+            else if (receive_move.equals("1"))
+            {
+                move_text.setText("前进");
+            }
+            else if (receive_move.equals("2"))
+            {
+                move_text.setText("后退");
+            }
+            else if (receive_move.equals("3"))
+            {
+                move_text.setText("左转");
+            }
+            else if (receive_move.equals("4"))
+            {
+                move_text.setText("右转");
+            }
+            else if (receive_move.equals("5"))
+            {
+                move_text.setText("上升");
+            }
+            else if (receive_move.equals("6"))
+            {
+                move_text.setText("下降");
+            }
+            deep_text.setText(" 深度: " + receive_deep+"m");
+            tem_text.setText(" 温度: " + receive_tem+"\u2103");
             if (receive_gps.length()>5)
             {
-                gps_text.setText("GPS状态 : 正常");
+                gps_text.setText(" GPS状态 : 正常");
             }
             else
             {
-                gps_text.setText("GPS状态 : 异常");
+                gps_text.setText(" GPS状态 : 异常");
 
             }
-            energy_text.setText("电量 : " + receive_energy);
+            energy_text.setText(" 电量 : " + receive_energy);
 
         }
         else if (topic.equals(MQTTService.myTopicList[1]))

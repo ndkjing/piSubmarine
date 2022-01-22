@@ -39,6 +39,7 @@ public class RockerView extends View {
     public int current_y;   // y坐标
     public int center_x;   // x坐标
     public int center_y;   // y坐标
+    int speed=60;
     private int mAreaRadius;
     private int mRockerRadius;
 
@@ -315,6 +316,16 @@ public class RockerView extends View {
         double angle = radian2Angle(radian);
         if (lenXY>40)
         {
+           speed = (int) (100*lenXY/regionRadius);
+           if (speed>100)
+           {
+               speed=100;
+           }
+//            Log.i(TAG, "getRockerPositionPoint: centerPoint :" +  centerPoint.x+" "+centerPoint.y);
+//            Log.i(TAG, "getRockerPositionPoint: touchPoint :" +  touchPoint.x+" "+touchPoint.y);
+//            Log.i(TAG, "getRockerPositionPoint: lenX  lenY :" +lenX+"  "+lenY);
+//            Log.i(TAG, "getRockerPositionPoint: regionRadius :" +regionRadius+"  "+lenXY+"  "+rockerRadius);
+            Log.i(TAG, "getRockerPositionPoint: speed :" + speed);
             // 回调 返回参数
             callBack(angle);
         }
@@ -340,8 +351,8 @@ public class RockerView extends View {
     private void moveRocker(float x, float y) {
         mRockerPosition.set((int) x, (int) y);
         Logger.i(TAG, "onTouchEvent: 移动位置 : x = " + mRockerPosition.x + " y = " + mRockerPosition.y);
-        Log.i(TAG, "onTouchEvent: 移动位置 : x = " + mRockerPosition.x + " y = " + mRockerPosition.y);
-        Log.i(TAG, "mCenterPoint: 中心位置 : x = " + mCenterPoint.x + " y = " + mCenterPoint.y);
+//        Log.i(TAG, "onTouchEvent: 移动位置 : x = " + mRockerPosition.x + " y = " + mRockerPosition.y);
+//        Log.i(TAG, "mCenterPoint: 中心位置 : x = " + mCenterPoint.x + " y = " + mCenterPoint.y);
         current_x=mRockerPosition.x;
         current_y=mRockerPosition.y;
         center_x=mCenterPoint.x;
@@ -402,7 +413,7 @@ public class RockerView extends View {
      */
     private void callBack(double angle) {
         if (null != mOnAngleChangeListener) {
-            mOnAngleChangeListener.angle(angle);
+            mOnAngleChangeListener.angle(angle,speed);
         }
         if (null != mOnShakeListener) {
             if (CallBackMode.CALL_BACK_MODE_MOVE == mCallBackMode) {
@@ -698,8 +709,10 @@ public class RockerView extends View {
          * 摇杆角度变化
          *
          * @param angle 角度[0,360)
+         * @param speed 速度[1,100)
          */
-        void angle(double angle);
+        void angle(double angle,int speed);
+
 
         // 结束
         void onFinish();
