@@ -43,21 +43,22 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/led"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/btn_bg"
-            android:onClick="automaticMode"
-            android:text="自动模式" />
+            android:onClick="ledToggle"
+            android:text="开灯" />
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/btn_bg"
-            android:onClick="closeCamera"
-            android:text="关闭摄像" />
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:background="@drawable/btn_bg"-->
+<!--            android:onClick="closeCamera"-->
+<!--            android:text="关闭摄像" />-->
 
     </LinearLayout>
 
@@ -137,15 +138,6 @@
                 android:onClick="addition"
                 android:text="+"/>
 
-        <TextView
-                android:id="@+id/speedDisplay"
-                android:text="5454"
-                android:textColor="#ffffff"
-                android:gravity="center"
-                android:layout_width="52dp"
-                android:layout_height="match_parent">
-        </TextView>
-
 
         <Button
                 android:layout_width="wrap_content"
@@ -156,15 +148,18 @@
 
     </LinearLayout>
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="reset"
-            android:background="@drawable/btn_bg"
-            android:layout_margin="10dp"
-            android:layout_above="@id/rockerView_right"
-            android:layout_alignParentEnd="true"
-            android:text="复位"/>
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_above="@id/rockerView_right"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:background="@drawable/btn_bg"-->
+<!--        android:onClick="reset"-->
+<!--        android:text="复位" />-->
 
     <TextView
             android:id="@+id/log_left"

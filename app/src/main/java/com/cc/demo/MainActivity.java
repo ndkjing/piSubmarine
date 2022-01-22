@@ -33,9 +33,10 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
     private MyServiceConnection serviceConnection;
     private MQTTService mqttService;
     public StandardGSYVideoPlayer videoPlayer;
-    private int move_direction=0;
-    private int speed=0;
-    private int right_direction=0;
+    private int move_direction=0;    //左侧摇杆值
+    private int speed=0;             //速度值
+    private int right_direction=0;  //右侧摇杆值
+    int led=0;  //灯光
     TextView mLogLeft;
     TextView mLogRight;
     TextView move_text;
@@ -44,6 +45,7 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
     TextView gps_text;
     TextView energy_text;
     TextView rpy_text;
+    TextView led_label;
 //    private final String path = "rtmp://58.200.131.2:1935/livetv/cctv1";
     private final String path = "rtmp://rtmp01open.ys7.com:1935/v3/openlive/F77671789_1_1?expire=1672904832&id=400676963705032704&t=27a8ecaf4ff569c0198fdc5cd71affe53b37c90520f60fe497656da95d0ce643&ev=100";
     private String receive_move;
@@ -410,7 +412,27 @@ public class MainActivity extends BaseActivity implements IGetMessageCallBack{
             }
         });
     }
-
+    public void ledToggle(View view) {
+        if(!ButtonDelayUtil.isFastClick()){
+            return;
+        }
+        led_label = findViewById(R.id.led);
+        if (led==0)
+        {
+            led_label.setText("开");
+            led=1;
+            showToast("打开led！");
+        }
+        else if (led==1)
+        {
+            led_label.setText("关");
+            led=0;
+            showToast("关闭led！");
+        }
+        String mqtt_topic =  String.format("switch_%s",MQTTService.device_code);
+        String mqtt_data = "{\"led\":\"" + led + "\"}";
+        MQTTService.publish_topic(mqtt_topic,mqtt_data);
+    }
     /*
      * 关闭影像按钮
      * */
